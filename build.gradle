@@ -7,6 +7,7 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
+sourceCompatibility = '21'
 
 java {
 	toolchain {
@@ -20,10 +21,25 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.postgresql:postgresql:42.7.3'
+
+    // Flyway
+    implementation 'org.flywaydb:flyway-core:10.17.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// bootRun 전/후에 도커 자동 제어
+tasks.register('composeUp', Exec) { commandLine 'docker','compose','up','-d' }
+tasks.register('composeDown', Exec) { commandLine 'docker','compose','down' }
+bootRun {
+    dependsOn composeUp
+    // finalizedBy composeDown   // 종료시 내리고 싶으면 주석 해제
 }
