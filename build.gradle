@@ -27,7 +27,8 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.7.3'
 
     // Flyway
-    implementation 'org.flywaydb:flyway-core:10.17.0'
+    implementation 'org.flywaydb:flyway-core:10.21.0'
+	implementation 'org.flywaydb:flyway-database-postgresql:10.21.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -36,10 +37,17 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// bootRun 전/후에 도커 자동 제어
-tasks.register('composeUp', Exec) { commandLine 'docker','compose','up','-d' }
-tasks.register('composeDown', Exec) { commandLine 'docker','compose','down' }
+tasks.register('composeUp', Exec) {
+    // DB 컨테이너 띄움 + healthcheck 완료까지 기다림
+    commandLine 'docker', 'compose', 'up', '-d', '--wait', '--wait-timeout', '60'
+}
+
+tasks.register('composeDown', Exec) {
+    // 종료 시 컨테이너 내리고 싶으면 사용
+    commandLine 'docker', 'compose', 'down'
+}
+
 bootRun {
-    dependsOn composeUp
-    // finalizedBy composeDown   // 종료시 내리고 싶으면 주석 해제
+    dependsOn 'composeUp'       // bootRun 전에 DB 자동 실행
+    // finalizedBy 'composeDown' // bootRun 끝날 때 DB도 내리고 싶으면 주석 해제
 }
