@@ -27,6 +27,7 @@ public class AccountController {
             )
         );
         return ResponseEntity.ok(ApiResponse.success(summary));
+    }
 
     @GetMapping("/{accountId}")
     public ResponseEntity<ApiResponse<Summary>> getAccountSummaryTest(@PathVariable Long accountId) {
