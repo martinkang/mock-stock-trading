@@ -13,5 +13,15 @@ public class OrderDtos {
         BigDecimal price,
         String status,
         LocalDateTime createdAt
+    ) {}
+
+    public record Detail(
+        Long id,
+        String stockSym,
+        String side,
+        Integer qty,
+        BigDecimal price,
+        String status,
+        LocalDateTime createdAt
     ) { }
 }
