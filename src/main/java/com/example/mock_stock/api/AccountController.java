@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.mock_stock.api.common.*;
 import com.example.mock_stock.domain.dto.AccountDtos.*;
-import com.example.mock_stock.domain.dto.AccountDtos.Summary.PositionDto;
 import com.example.mock_stock.service.AccountQueryService;
 
 @RestController
@@ -33,7 +32,7 @@ public class AccountController {
     @GetMapping("/{accountId}")
     public ResponseEntity<ApiResponse<Summary>> getAccountSummaryTest(@PathVariable Long accountId) {
         Summary summary = accountQueryService.getAccountSummaryByUserId(accountId);
-        
+
         return ResponseEntity.ok(ApiResponse.success(summary));
     }
 }

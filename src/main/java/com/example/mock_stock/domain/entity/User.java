@@ -28,4 +28,5 @@ public class User {
     public BigDecimal getBalance() { return balance; }
     public void setBalance(BigDecimal balance) { this.balance = balance; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

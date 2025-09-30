@@ -34,4 +34,5 @@ public class Trade {
     public BigDecimal getTradePrice() { return tradePrice; }
     public void setTradePrice(BigDecimal tradePrice) { this.tradePrice = tradePrice; }
     public LocalDateTime getTradedAt() { return tradedAt; }
+    public void setTradedAt(LocalDateTime tradedAt) { this.tradedAt = tradedAt; }
 }

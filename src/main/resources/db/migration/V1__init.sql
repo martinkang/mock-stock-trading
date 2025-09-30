@@ -28,7 +28,5 @@ CREATE TABLE IF NOT EXISTS trades (
 );
 
 -- 조회 최적화를 위한 인덱스 예시
-CREATE INDEX IF NOT EXISTS
-
- idx_orders_user_created ON orders(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_orders_user_created ON orders(user_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_trades_order       ON trades(order_id);
