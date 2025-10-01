@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:stockdb}
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:stock}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:pwd}
     hikari:
@@ -16,3 +16,8 @@ spring:
     locations: classpath:db/migration
     connect-retries: 10
     connect-retries-interval: 2s
+
+finnhub:
+  ws-url: ${FINHUB_WS_URL:wss://ws.finnhub.io}
+  api-key: ${FINHUB_API_KEY}
+  rest-url: ${FINNHUB_REST_URL:https://finnhub.io/api/v1}

@@ -20,17 +20,33 @@ repositories {
 }
 
 dependencies {
+    // 🔹 Spring Boot 기본 의존성 (코어 컨텍스트/DI, 자동설정 등)
 	implementation 'org.springframework.boot:spring-boot-starter'
+
+    // 🔹 Spring Data JPA (ORM, Hibernate 연동, 엔티티/리포지토리)
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // 🔹 Spring Web (REST API, MVC, 내장 톰캣 포함)
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // 🔹 PostgreSQL JDBC 드라이버
     implementation 'org.postgresql:postgresql:42.7.3'
 
-    // Flyway
+    // 🔹 Flyway (DB 마이그레이션 관리 - core 엔진)
     implementation 'org.flywaydb:flyway-core:10.21.0'
+    // 🔹 Flyway의 PostgreSQL 지원 모듈
 	implementation 'org.flywaydb:flyway-database-postgresql:10.21.0'
 
+    // 🔹 spring-dotenv (로컬 개발용, .env 파일을 Spring Environment로 로드)
+	implementation 'me.paulschwarz:spring-dotenv:3.0.0'
+
+	// 리액티브 웹 (Spring WebFlux)
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // 🔹 Spring Boot 테스트 스타터 (JUnit5, MockMvc, AssertJ 등 포함)
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // 🔹 JUnit 플랫폼 런처 (IDE/Gradle에서 JUnit 실행 지원)
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher' 
 }
 
 tasks.named('test') {
