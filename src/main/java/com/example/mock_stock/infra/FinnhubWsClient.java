@@ -1,7 +1,7 @@
 package com.example.mock_stock.infra;
 
 import com.example.mock_stock.config.FinnhubProperties;
-import com.example.mock_stock.domain.Tick;
+import com.example.mock_stock.domain.dto.Tick;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
@@ -59,40 +59,38 @@ public class FinnhubWsClient {
         System.out.printf(msg);
     }
 
-    /* ---------------- 내부 구현 ---------------- */
-
-private void connectWithRetry() {
-    Executors.newSingleThreadExecutor().submit(() -> {
-        int backoff = 1;
-        while (true) {
-            try {
-                connect();
-                resubscribeAll();
-                return;
-            } catch (Exception e) {
-                System.err.println("[WS] connect failed: " + e.getMessage());
-                // 백오프 대기
-                if (!sleepBackoff(backoff)) break; // 인터럽트된 경우 루프 종료
-                backoff = Math.min(backoff * 2, 30);
+    private void connectWithRetry() {
+        Executors.newSingleThreadExecutor().submit(() -> {
+            int backoff = 1;
+            while (true) {
+                try {
+                    connect();
+                    resubscribeAll();
+                    return;
+                } catch (Exception e) {
+                    System.err.println("[WS] connect failed: " + e.getMessage());
+                    // 백오프 대기
+                    if (!sleepBackoff(backoff)) break; // 인터럽트된 경우 루프 종료
+                    backoff = Math.min(backoff * 2, 30);
+                }
             }
-        }
-    });
-}
-
-/**
- * 백오프 대기 (InterruptedException 처리 포함)
- * @param backoffSeconds 대기할 초
- * @return true: 정상 sleep 후 진행, false: 인터럽트 발생 → 루프 종료 권장
- */
-private boolean sleepBackoff(int backoffSeconds) {
-    try {
-        TimeUnit.SECONDS.sleep(Math.min(backoffSeconds, 30));
-        return true;
-    } catch (InterruptedException ie) {
-        Thread.currentThread().interrupt(); // 인터럽트 상태 복구
-        return false;
+        });
     }
-}
+
+    /**
+     * 백오프 대기 (InterruptedException 처리 포함)
+     * @param backoffSeconds 대기할 초
+     * @return true: 정상 sleep 후 진행, false: 인터럽트 발생 → 루프 종료 권장
+     */
+    private boolean sleepBackoff(int backoffSeconds) {
+        try {
+            TimeUnit.SECONDS.sleep(Math.min(backoffSeconds, 30));
+            return true;
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt(); // 인터럽트 상태 복구
+            return false;
+        }
+    }
 
     private void connect() throws Exception {
         var uri = URI.create(props.wsUrl() + "?token=" + props.apiKey());

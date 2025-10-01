@@ -23,6 +23,6 @@ public class ApiExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResponse handleException(Exception ex) {
-        return ApiResponse.failure("An unexpected error occurred.");
+        return ApiResponse.failure("An unexpected error occurred. (" + ex.getMessage() + ")");
     }
 }

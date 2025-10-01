@@ -1,4 +1,4 @@
-package com.example.mock_stock.domain;
+package com.example.mock_stock.domain.dto;
 
 public record Tick(
     String symbol, 
