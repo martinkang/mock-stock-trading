@@ -43,6 +43,12 @@ dependencies {
 	// 리액티브 웹 (Spring WebFlux)
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    /* --- ✅ Kafka 통합 (Producer + Consumer + Admin 포함) --- */
+    implementation 'org.springframework.kafka:spring-kafka'
+    testImplementation 'org.springframework.kafka:spring-kafka-test' // 내장 브로커 테스트용
+
+    
+
     // 🔹 Spring Boot 테스트 스타터 (JUnit5, MockMvc, AssertJ 등 포함)
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // 🔹 JUnit 플랫폼 런처 (IDE/Gradle에서 JUnit 실행 지원)
