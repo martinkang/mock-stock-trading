@@ -1,10 +1,11 @@
 package com.example.mock_stock.repository;
 
-import com.example.mock_stock.domain.entity.User;
-
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.mock_stock.domain.model.entity.User;
+
 import java.util.List;
 
 

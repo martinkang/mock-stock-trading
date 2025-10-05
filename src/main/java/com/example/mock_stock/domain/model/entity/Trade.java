@@ -1,4 +1,4 @@
-package com.example.mock_stock.domain.entity;
+package com.example.mock_stock.domain.model.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;

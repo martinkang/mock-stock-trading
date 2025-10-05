@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     id          BIGSERIAL PRIMARY KEY,
     username    VARCHAR(50) NOT NULL UNIQUE,
     balance     NUMERIC(18,2) DEFAULT 0,
+    version     BIGINT NOT NULL DEFAULT 0,        -- ✅ JPA @Version 필드
     created_at  TIMESTAMP NOT NULL DEFAULT now()
 );
 
@@ -13,8 +14,10 @@ CREATE TABLE IF NOT EXISTS orders (
     stock_sym   VARCHAR(12) NOT NULL,
     side        VARCHAR(4)  NOT NULL CHECK (side IN ('BUY','SELL')),
     qty         INT NOT NULL CHECK (qty > 0),
+    filled_qty  INT NOT NULL DEFAULT 0 CHECK (filled_qty >= 0),
     price       NUMERIC(18,2) NOT NULL CHECK (price >= 0),
     status      VARCHAR(12) NOT NULL DEFAULT 'PENDING',
+    version     BIGINT NOT NULL DEFAULT 0,        -- ✅ JPA @Version 필드
     created_at  TIMESTAMP NOT NULL DEFAULT now()
 );
 
@@ -25,6 +28,15 @@ CREATE TABLE IF NOT EXISTS trades (
     trade_qty   INT NOT NULL CHECK (trade_qty > 0),
     trade_price NUMERIC(18,2) NOT NULL CHECK (trade_price >= 0),
     traded_at   TIMESTAMP NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS stocks (
+  id     BIGSERIAL PRIMARY KEY,
+  symbol TEXT UNIQUE,
+  name   TEXT,
+  price  NUMERIC(10,2),
+  created_at  TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at  TIMESTAMP NOT NULL DEFAULT now()
 );
 
 -- 조회 최적화를 위한 인덱스 예시

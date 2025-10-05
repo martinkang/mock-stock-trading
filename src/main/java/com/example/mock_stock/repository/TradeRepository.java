@@ -1,8 +1,9 @@
 package com.example.mock_stock.repository;
 
-import com.example.mock_stock.domain.entity.Trade;
-import com.example.mock_stock.domain.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.mock_stock.domain.model.entity.Order;
+import com.example.mock_stock.domain.model.entity.Trade;
 
 import java.util.List;
 

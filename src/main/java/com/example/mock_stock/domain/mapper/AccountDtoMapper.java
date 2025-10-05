@@ -1,7 +1,7 @@
 package com.example.mock_stock.domain.mapper;
 
 import com.example.mock_stock.domain.dto.AccountDtos;
-import com.example.mock_stock.domain.entity.User;
+import com.example.mock_stock.domain.model.entity.User;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -1,23 +1,59 @@
 spring:
   datasource:
+    # ✅ 애플이 접속할 DB URL. compose에서 5432로 포트 노출했으니 localhost로 접근.
     url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:stock}
+    # ✅ 접속 계정/비번 (없으면 기본값 사용)
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:pwd}
     hikari:
+      # ✅ DB 시작이 느린 경우에도 앱 부팅을 막지 않음(0=비활성). 개발 편의용.
       initialization-fail-timeout: 0
+
   jpa:
     hibernate:
-      ddl-auto: validate      # 스키마는 Flyway가 관리 → validate 권장
+      # ✅ 스키마 관리는 Flyway가 함. 앱은 스키마를 검증만(수정 X).
+      ddl-auto: validate
     properties:
       hibernate:
+        # ✅ Hibernate가 어떤 SQL 방언을 쓸지 지정(PostgreSQL)
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
   flyway:
+    # ✅ Flyway 마이그레이션 사용
     enabled: true
+    # ✅ 마이그레이션 파일 위치 (예: src/main/resources/db/migration/V1__init.sql)
     locations: classpath:db/migration
+    # ✅ DB가 늦게 떠도 재시도
     connect-retries: 10
+    # ✅ 재시도 간격(스프링부트 3.x는 ISO-8601 duration 또는 s/ms 표기)
     connect-retries-interval: 2s
 
+  kafka:
+    # ✅ Kafka 브로커 접속 주소 (compose에서 9092 노출 → localhost:9092)
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+    producer:
+      # ✅ 메시지 키 직렬화기(문자열 키 사용)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # ✅ 메시지 값 직렬화기(JSON). record/POJO를 JSON으로 자동 변환해 전송.
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    consumer:
+      # ✅ 컨슈머 그룹 ID (동일 그룹은 파티션을 나눠서 소비)
+      group-id: ${KAFKA_GROUP_ID:demo-consumer}
+      # ✅ 메시지 키 역직렬화기(문자열)
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # ✅ 메시지 값 역직렬화기(JSON → record/POJO)
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        # ✅ 신뢰할 패키지. 데모/개발에선 "*" 로 두고,
+        #    운영에선 "com.example.trade.events" 같이 좁혀서 보안 강화 권장.
+        spring.json.trusted.packages: "*"
+
 finnhub:
+  # ✅ 실시간 시세 WebSocket URL (환경변수 없으면 기본값 사용)
   ws-url: ${FINHUB_WS_URL:wss://ws.finnhub.io}
+  # ✅ API 키 (반드시 본인 키로 설정)
   api-key: ${FINHUB_API_KEY}
+  # ✅ REST API URL
   rest-url: ${FINNHUB_REST_URL:https://finnhub.io/api/v1}

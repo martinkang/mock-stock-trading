@@ -1,9 +1,10 @@
 package com.example.mock_stock.repository;
 
-import com.example.mock_stock.domain.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import com.example.mock_stock.domain.model.entity.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.mock_stock.domain.dto.AccountDtos;
-import com.example.mock_stock.domain.entity.User;
 import com.example.mock_stock.domain.mapper.AccountDtoMapper;
+import com.example.mock_stock.domain.model.entity.User;
 import com.example.mock_stock.repository.UserRepository;
 
 @Service

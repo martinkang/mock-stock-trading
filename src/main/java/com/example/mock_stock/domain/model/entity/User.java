@@ -1,4 +1,4 @@
-package com.example.mock_stock.domain.entity;
+package com.example.mock_stock.domain.model.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -17,6 +17,9 @@ public class User {
     @Column(precision = 18, scale = 2)
     private BigDecimal balance = BigDecimal.ZERO;
 
+    @Version
+    private Long version;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -29,4 +32,8 @@ public class User {
     public void setBalance(BigDecimal balance) { this.balance = balance; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public String toString() {
+        return "User{id=" + id + ", username='" + username + "', balance=" + balance + ", createdAt=" + createdAt + "}";
+    }   
 }
