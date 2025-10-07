@@ -1,6 +1,7 @@
 package com.example.mock_stock.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import org.springframework.context.ApplicationEventPublisher;
@@ -60,39 +61,24 @@ public class OrderMutationService {
              user.setBalance(balance.subtract(totalPrice));
         } 
             
-        Order newOrder = new Order();
-        {
-            newOrder.setUser(user);
-            newOrder.setStockSym(request.getSymbol());
-            newOrder.setSide(request.getSide());
-            newOrder.setQty(request.getQuantity());
-            newOrder.setPrice(request.getPrice());
-            newOrder.setStatus(OrderStatus.ACCEPTED);
-            newOrder.setCreatedAt(java.time.LocalDateTime.now());
-        }
+        Order newOrder = new Order.Builder(
+                user,                   
+                request.getSymbol(),     
+                request.getSide(),      
+                request.getPrice(),      
+                request.getQuantity()   
+        )
+        .status(OrderStatus.ACCEPTED)  
+        .createdAt(LocalDateTime.now()) 
+        .build();
+
         Order savedOrder = orderRepository.save(newOrder);
 
-        publisher.publishEvent(new OrderCreatedEvent(
-            savedOrder.getId(), 
-            user.getId(), 
-            savedOrder.getStockSym(), 
-            savedOrder.getSide(), 
-            savedOrder.getQty(), 
-            savedOrder.getPrice()
-        ));
+        publisher.publishEvent(OrderCreatedEvent.from(savedOrder));
 
         System.out.println("Order " + savedOrder.toString() + " user : " + user.toString() + " placed successfully." );
 
-        return new OrderResponse(
-            savedOrder.getId(),
-            savedOrder.getStockSym(),
-            savedOrder.getSide(),
-            savedOrder.getStatus(),
-            savedOrder.getQty(),
-            0, // filledQuantity
-            savedOrder.getPrice(),
-            savedOrder.getCreatedAt()
-        );
+        return OrderResponse.from(savedOrder);
     }
 
     private void validation(OrderRequest request) {

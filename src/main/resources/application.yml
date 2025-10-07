@@ -33,6 +33,8 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     admin:
       fail-fast: true  # 시작 시점에 브로커 연결 실패하면 앱도 종료
+    listener:
+      ack-mode: manual
     producer:
       # ✅ 메시지 키 직렬화기(문자열 키 사용)
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
